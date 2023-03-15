@@ -4,7 +4,9 @@ import com.itconference.itconference.model.RegisterModel;
 import com.itconference.itconference.services.UserRegisterService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +28,11 @@ public class UsersController {
     @GetMapping("test-server")
     public String test(){
         return "Server running....";
+    }
+
+    @GetMapping("/")
+    public String getPage(){
+        return "index";
     }
 
 }
