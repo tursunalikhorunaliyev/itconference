@@ -23,4 +23,9 @@ public class UsersController {
         return userRegisterService.generate();
     }
 
+    @GetMapping("test-server")
+    public String test(){
+        return "Server running....";
+    }
+
 }
