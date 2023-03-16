@@ -235,7 +235,7 @@ button {
     height: auto;
     background-size: 100%;
     padding: 0px 0px 20px 0px;
-}
+} 
 
 .bg-light {
     background-color: transparent !important;
@@ -245,7 +245,7 @@ button {
     width: 100%;
     float: left;
     text-align: center;
-    padding: 20px 0px 50px 0px;
+    padding: 20px 0px 0px 0px;
 }
 
 .logo_mobile {
@@ -305,28 +305,6 @@ button {
     display: inline-flex;
 }
 
-.menu_main li {
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 18px;
-    text-transform: uppercase;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    color: #fff;
-    border-radius: 40px;
-}
-
-.menu_main li a {
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 10px;
-}
-
-.menu_main li a:hover {
-    color: #ffffff;
-    background-color: #2b2278;
-}
 
 .mb-lg-0,
 .my-lg-0 {
@@ -351,15 +329,16 @@ button {
 .banner_section {
     width: 100%;
     float: left;
+    height: 500px;
     padding-bottom: 305px;
 }
 
 .banner_taital {
     width: 100%;
     float: left;
-    font-size: 80px;
+    font-size: 55px;
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
     text-transform: uppercase;
     font-family: 'Righteous', Regular;
@@ -377,14 +356,15 @@ button {
     width: 200px;
     margin: 0 auto;
     text-align: center;
+    transition: .0s;
 }
 
 .read_bt a {
     width: 100%;
     float: left;
     font-size: 16px;
-    color: #141414;
-    background-color: #ffffff;
+    color: #fff;
+    background-color: #2b2278;
     text-align: center;
     padding: 10px 0px;
     border-radius: 30px;
@@ -393,8 +373,8 @@ button {
 }
 
 .read_bt a:hover {
-    background-color: #2b2278;
-    color: #ffffff;
+    background-color: #FFFFFf;
+    color: #000;
 }
 
 
@@ -406,6 +386,7 @@ button {
 .services_section {
     width: 100%;
     float: left;
+    text-align: center;
     padding-bottom: 90px;
 }
 
@@ -438,7 +419,7 @@ button {
 }
 
 .btn_main {
-    width: 170px;
+    width: 185px;
     margin: 0 auto;
     text-align: center;
 }
@@ -966,14 +947,14 @@ button {
 
 .location_main {
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto; 
     text-align: center;
     padding-top: 40px;
 }
 
 .call_text {
     width: 100%;
-    float: left;
+    float: right;
     font-size: 16px;
     color: #ffffff;
     padding-top: 10px
@@ -990,26 +971,4 @@ button {
 
 /* footer section end */
 
-.copyright_section {
-    width: 100%;
-    float: left;
-    background-color: #122c2d;
-    height: auto;
-}
 
-.copyright_text {
-    width: 100%;
-    float: left;
-    color: #ffffff;
-    text-align: center;
-    font-size: 16px;
-    margin-left: 0px;
-}
-
-.copyright_text a {
-    color: #ffffff;
-}
-
-.copyright_text a:hover {
-    color: #e27141;
-}
