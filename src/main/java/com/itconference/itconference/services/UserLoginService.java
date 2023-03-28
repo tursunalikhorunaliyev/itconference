@@ -3,10 +3,14 @@ import com.itconference.itconference.entities.Users;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultSucces;
 import com.itconference.itconference.repositories.UsersRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
+@AllArgsConstructor
 public class UserLoginService {
 
     private UsersRepository usersRepository;
