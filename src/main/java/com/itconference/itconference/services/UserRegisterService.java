@@ -53,7 +53,7 @@ public class UserRegisterService {
             return ResponseEntity.ok(new ResultModel(false, "Familiya kiritilmagan"));
         }
         if(!phoneOriginal.isEmpty()){
-            if(phoneOriginal.length()<9 && (!phoneCodes.contains(phoneOriginal.substring(0, 2)))){
+            if(phoneOriginal.length()<13 && (!phoneCodes.contains(phoneOriginal.substring(1, 3)))){
                 return ResponseEntity.ok(new ResultModel(false, "Telefon raqam xato kiritilgan"));
             }
             else{
