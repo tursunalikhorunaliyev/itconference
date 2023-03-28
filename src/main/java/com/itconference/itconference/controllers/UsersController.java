@@ -21,7 +21,7 @@ public class UsersController {
     }
     @GetMapping("test-server")
     public String test(){
-        return "Server running....";
+        return "Server running.....";
     }
     @GetMapping("/")
     public String getPage(){
