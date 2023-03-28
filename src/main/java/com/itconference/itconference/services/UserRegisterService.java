@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -19,6 +23,18 @@ public class UserRegisterService {
 
 
     public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone){
+        final List<String> phoneCodes = new LinkedList<>();
+        phoneCodes.add("90");
+        phoneCodes.add("91");
+        phoneCodes.add("93");
+        phoneCodes.add("94");
+        phoneCodes.add("99");
+        phoneCodes.add("33");
+        phoneCodes.add("88");
+        phoneCodes.add("73");
+        phoneCodes.add("95");
+        phoneCodes.add("71");
+
         final String firstnameOriginal = firstname.trim();
         final String lastnameOriginal = lastname.trim();
         final String phoneOriginal = phone.trim();
@@ -37,7 +53,7 @@ public class UserRegisterService {
             return ResponseEntity.ok(new ResultModel(false, "Familiya kiritilmagan"));
         }
         if(!phoneOriginal.isEmpty()){
-            if(phoneOriginal.length()<13 || !phoneOriginal.startsWith("+998")){
+            if(phoneOriginal.length()<9 && (!phoneCodes.contains(phoneOriginal.substring(0, 2)))){
                 return ResponseEntity.ok(new ResultModel(false, "Telefon raqam xato kiritilgan"));
             }
             else{
@@ -76,5 +92,6 @@ public class UserRegisterService {
         registerSucces.setCardID(random_int);
         return ResponseEntity.ok(registerSucces);
     }
+
 
 }
