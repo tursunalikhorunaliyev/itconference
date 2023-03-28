@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterModel {
+public class ResultModel {
 
     private boolean status;
     private String message;
