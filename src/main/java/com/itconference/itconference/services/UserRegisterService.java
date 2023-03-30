@@ -54,7 +54,7 @@ public class UserRegisterService {
             return ResponseEntity.ok(new ResultModel(false, "Familiya kiritilmagan"));
         }
         if(!phoneOriginal.isEmpty()){
-            if(phoneOriginal.length()==13 && (phoneCodes.contains(phoneOriginal.substring(1, 3)))){
+            if(phoneOriginal.length()==14 && (phoneCodes.contains(phoneOriginal.substring(1, 3)))){
                 user.setPhone(phone);
 
             }
