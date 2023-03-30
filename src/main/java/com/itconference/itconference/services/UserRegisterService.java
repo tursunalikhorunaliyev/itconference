@@ -3,8 +3,9 @@ package com.itconference.itconference.services;
 import com.itconference.itconference.entities.GeneratedCard;
 import com.itconference.itconference.entities.Users;
 import com.itconference.itconference.model.ResultModel;
+import com.itconference.itconference.model.ResultModelData;
 import com.itconference.itconference.model.ResultSucces;
-import com.itconference.itconference.repositories.GeneratedRepository;
+import com.itconference.itconference.repositories.GeneratedCardRepository;
 import com.itconference.itconference.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserRegisterService {
     private final UsersRepository usersRepository;
-    private final GeneratedRepository generatedRepository;
+    private final GeneratedCardRepository generatedRepository;
 
 
     public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone){
@@ -86,12 +87,15 @@ public class UserRegisterService {
         user.setGenerated(generated);
         usersRepository.save(user);
         final ResultSucces registerSucces = new ResultSucces();
-        registerSucces.setStatus(true);
-        registerSucces.setMessage("Siz muvaffaqiyatli ro'yxatdan o'tdingiz");
+
         registerSucces.setFirstname(firstnameOriginal);
         registerSucces.setLastname(lastnameOriginal);
         registerSucces.setCardID(random_int);
-        return ResponseEntity.ok(registerSucces);
+
+        ResultModelData resultModelData = new ResultModelData(registerSucces);
+        resultModelData.setStatus(true);
+        resultModelData.setMessage("Siz muvaffaqiyatli ro'yxatdan o'tdingiz");
+        return ResponseEntity.ok(resultModelData);
     }
 
 
