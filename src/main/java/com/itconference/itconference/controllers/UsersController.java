@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("it-conference-kuva")
+@RequestMapping("it-conference-kuva/auth")
 @AllArgsConstructor
 public class UsersController {
     private final UserRegisterService userRegisterService;
