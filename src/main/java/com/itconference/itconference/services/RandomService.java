@@ -1,6 +1,8 @@
 package com.itconference.itconference.services;
+import com.itconference.itconference.entities.GeneratedCard;
 import com.itconference.itconference.entities.RandomedUsers;
 import com.itconference.itconference.entities.Users;
+import com.itconference.itconference.entities.Winners;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultModelData;
 import com.itconference.itconference.model.ResultRandom;
@@ -11,8 +13,10 @@ import com.itconference.itconference.repositories.WinnersRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -101,5 +105,26 @@ public class RandomService {
         resultModelData.setMessage("Barcha random qilingan foydalanuvchilar");
 
         return ResponseEntity.ok(resultModelData);
+    }
+
+    public ResponseEntity<ResultModel> acceptWinner(Long cardId){
+        Optional<GeneratedCard> generatedCardOptional = generatedCardRepository.findByCardID(cardId);
+        if(generatedCardOptional.isPresent()){
+            GeneratedCard generatedCard = generatedCardOptional.get();
+            Optional<Users> winnerOptional = usersRepository.findByGenerated(generatedCard);
+            if(winnerOptional.isPresent()){
+                Winners winner = new Winners();
+                winner.setUsers(winnerOptional.get());
+                winnersRepository.save(winner);
+                return ResponseEntity.ok(new ResultModel(true, "G'olib saqlandi"));
+            }
+            else{
+                return ResponseEntity.ok(new ResultModel(true, "Card id topilmadi"));
+            }
+        }
+        else{
+            return ResponseEntity.ok(new ResultModel(true, "User topilmadi"));
+        }
+
     }
 }
