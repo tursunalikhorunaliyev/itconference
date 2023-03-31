@@ -19,7 +19,7 @@ public class UsersController {
     private final UsersRepository usersRepository;
 
     @PostMapping("register")
-    public ResponseEntity<ResultModel> register(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("phone") String phone, @RequestParam(required = false ,value = "OS") String os){
+    public ResponseEntity<ResultModel> register(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("phone") String phone, @RequestParam(required = false ,value = "device") String os){
         return userRegisterService.register(firstname, lastname, phone, os);
     }
     @PostMapping("login")

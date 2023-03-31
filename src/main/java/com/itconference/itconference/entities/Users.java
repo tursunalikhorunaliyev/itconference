@@ -26,7 +26,7 @@ public class Users {
     @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column
+    @Column(name = "device")
     private String os;
 
     @Column(nullable = false)

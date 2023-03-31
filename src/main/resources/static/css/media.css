@@ -1,0 +1,36 @@
+@media(max-width: 1128px){
+    .read_bt {
+            font-size: 10px;
+            padding: 5px 0px;
+            margin-top: 25px;
+            font-weight: 300;
+    }
+    .read_btn1{
+        display: block;
+    }
+}
+@media(min-width: 919px){
+    .read_btn1 {
+        display: none;
+    }
+
+}
+@media(min-width: 766px){
+    .read_bt {
+        width: 120px;
+        height: 23px;
+    }
+
+}
+@media(max-width:675px){
+    .read_btn{
+        width: 170px;
+        margin-top: 20px;
+    }
+}
+@media(max-width:500px){
+    .read_btn{
+        width: 130px;
+        margin-bottom: 60px;
+    }
+}
