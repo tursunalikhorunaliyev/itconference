@@ -119,11 +119,11 @@ public class RandomService {
                 return ResponseEntity.ok(new ResultModel(true, "G'olib saqlandi"));
             }
             else{
-                return ResponseEntity.ok(new ResultModel(true, "Card id topilmadi"));
+                return ResponseEntity.ok(new ResultModel(false, "Card id topilmadi"));
             }
         }
         else{
-            return ResponseEntity.ok(new ResultModel(true, "User topilmadi"));
+            return ResponseEntity.ok(new ResultModel(false, "User topilmadi"));
         }
 
     }

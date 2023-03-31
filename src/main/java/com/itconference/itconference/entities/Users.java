@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -23,6 +25,12 @@ public class Users {
 
     @Column(nullable = false, unique = true)
     private String phone;
+
+    @Column
+    private String os;
+
+    @Column(nullable = false)
+    private LocalDateTime date;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_generated_id", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "generated_id", referencedColumnName = "id"))

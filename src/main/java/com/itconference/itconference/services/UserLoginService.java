@@ -31,7 +31,7 @@ public class UserLoginService {
         phoneCodes.add("95");
         phoneCodes.add("71");
         final String phoneOriginal = phone.trim();
-        if(phoneOriginal.length()==13 && phoneCodes.contains(phoneOriginal.substring(1,3))){
+        if(phoneOriginal.length()==14 && phoneCodes.contains(phoneOriginal.substring(1,3))){
             Optional<Users> usersOptional = usersRepository.findByPhone(phoneOriginal);
             if(usersOptional.isPresent()){
                 Users user = usersOptional.get();
@@ -45,8 +45,11 @@ public class UserLoginService {
                 return ResponseEntity.ok(new ResultModel(false, "Bu foydalanuvchi tizimda ro'yxatdan o'tkazilmagan"));
             }
         }
-        else{
-            return ResponseEntity.ok(new ResultModel(false, "raqam noto'g'ri kiritilgan"));
+        else if(phoneOriginal.isEmpty()){
+            return ResponseEntity.ok(new ResultModel(false, "Raqam kiritilmagan"));
+        }
+        else {
+            return ResponseEntity.ok(new ResultModel(false, "Raqam noto'g'ri kiritilgan"));
         }
     }
 }

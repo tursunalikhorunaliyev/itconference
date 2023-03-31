@@ -10,6 +10,8 @@ import com.itconference.itconference.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class UserRegisterService {
     private final GeneratedCardRepository generatedRepository;
 
 
-    public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone){
+    public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone, String os){
         final List<String> phoneCodes = new LinkedList<>();
         phoneCodes.add("90");
         phoneCodes.add("91");
@@ -83,6 +85,10 @@ public class UserRegisterService {
         final GeneratedCard generated = new GeneratedCard();
         generated.setCardID(random_int);
         user.setGenerated(generated);
+        if(os != null){
+            user.setOs(os);
+        }
+        user.setDate(LocalDateTime.now());
         usersRepository.save(user);
         final ResultSucces registerSucces = new ResultSucces();
 
