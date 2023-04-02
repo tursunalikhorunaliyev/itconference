@@ -6,6 +6,7 @@ import com.itconference.itconference.services.UserLoginService;
 import com.itconference.itconference.services.UserRegisterService;
 import com.itconference.itconference.services.UsersService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UsersController {
     }
 
     @GetMapping("users")
-    public ResponseEntity<List<Users>> users(@RequestParam Long page){
+    public ResponseEntity<Page<Users>> users(@RequestParam int page){
         return ResponseEntity.ok(usersService.userByPage(page));
     }
 

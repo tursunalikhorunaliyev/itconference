@@ -2,6 +2,8 @@ package com.itconference.itconference.repositories;
 
 import com.itconference.itconference.entities.GeneratedCard;
 import com.itconference.itconference.entities.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +17,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByPhone(String phone);
     Optional<Users> findByGenerated(GeneratedCard generatedCard);
 
-    @Query(value = "select * from users limit 14 offset :offset", nativeQuery = true)
-    List<Users> getUsersByPage(@Param("offset") Long offset);
+    @Query(value = "select * from users order by id", nativeQuery = true)
+    Page<Users> getUsersByPage(Pageable pageable);
 
 }
