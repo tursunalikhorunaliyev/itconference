@@ -4,6 +4,7 @@ import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.repositories.UsersRepository;
 import com.itconference.itconference.services.UserLoginService;
 import com.itconference.itconference.services.UserRegisterService;
+import com.itconference.itconference.services.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class UsersController {
     private final UserRegisterService userRegisterService;
     private final UserLoginService userLoginService;
     private final UsersRepository usersRepository;
+    private final UsersService usersService;
 
     @PostMapping("register")
     public ResponseEntity<ResultModel> register(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("phone") String phone, @RequestParam(required = false ,value = "device") String os){
@@ -30,6 +32,11 @@ public class UsersController {
     @GetMapping("all-v1users")
     public ResponseEntity<List<Users>> allv1Users(){
         return ResponseEntity.ok(usersRepository.findAll());
+    }
+
+    @GetMapping("users")
+    public ResponseEntity<List<Users>> users(@RequestParam Long page){
+        return ResponseEntity.ok(usersService.userByPage(page));
     }
 
 
