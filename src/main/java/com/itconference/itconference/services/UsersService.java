@@ -50,4 +50,9 @@ public class UsersService {
         return ResponseEntity.ok(users);
 
     }
+
+    public ResponseEntity<ResultModel> deleteUser(Long id){
+        usersRepository.deleteById(id);
+        return ResponseEntity.ok(new ResultModel(true,"Ma'lumot o'chirildi"));
+    }
 }
