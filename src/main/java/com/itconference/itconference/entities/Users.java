@@ -32,6 +32,9 @@ public class Users {
     @Column(nullable = false)
     private LocalDateTime date;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedDate;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_generated_id", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "generated_id", referencedColumnName = "id"))
     private GeneratedCard generated;

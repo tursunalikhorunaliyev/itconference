@@ -5,7 +5,6 @@ import com.itconference.itconference.entities.Users;
 import com.itconference.itconference.entities.UsersCount;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultModelData;
-import com.itconference.itconference.model.ResultSucces;
 import com.itconference.itconference.repositories.GeneratedCardRepository;
 import com.itconference.itconference.repositories.UsersCountRepository;
 import com.itconference.itconference.repositories.UsersRepository;
@@ -28,54 +27,39 @@ public class UserRegisterService {
     private final UsersCountRepository usersCountRepository;
 
 
+
     public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone, String os){
-        final List<String> phoneCodes = new LinkedList<>();
-        phoneCodes.add("90");
-        phoneCodes.add("91");
-        phoneCodes.add("93");
-        phoneCodes.add("94");
-        phoneCodes.add("99");
-        phoneCodes.add("33");
-        phoneCodes.add("88");
-        phoneCodes.add("73");
-        phoneCodes.add("95");
-        phoneCodes.add("71");
 
-        final String firstnameOriginal = firstname.trim();
-        final String lastnameOriginal = lastname.trim();
-        final String phoneOriginal = phone.trim();
 
-        final Users user = new Users();
-        if(!firstnameOriginal.isEmpty()){
-            user.setFirstname(firstname.trim());
-        }
-        else {
-            return ResponseEntity.ok(new ResultModel(false, "Ism kiritilmagan"));
-        }
-        if(!lastnameOriginal.isEmpty()){
-            user.setLastname(lastname.trim());
-        }
-        else{
-            return ResponseEntity.ok(new ResultModel(false, "Familiya kiritilmagan"));
-        }
-        if(!phoneOriginal.isEmpty()){
-            if(phoneOriginal.length()==14 && (phoneCodes.contains(phoneOriginal.substring(1, 3)))){
-                user.setPhone(phone);
+        UserValidation userValidation = new UserValidation(usersRepository);
+        firstname = firstname.trim();
+        lastname = lastname.trim();
+        phone = phone.trim();
 
-            }
-            else{
-                return ResponseEntity.ok(new ResultModel(false, "Telefon raqam xato kiritilgan"));
-            }
+        userValidation.validate(firstname, lastname, phone);
+        Users user = new Users();
+
+        if(userValidation.isFirstnameEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Ism kiritilmagan"));
         }
-        else{
-            return ResponseEntity.ok(new ResultModel(false, "Telefon raqam kiritilmagan"));
+        if(userValidation.isLastnameEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Familiya kiritilmagan"));
         }
-        if(usersRepository.existsByPhone(phoneOriginal)){
-            return ResponseEntity.ok(new ResultModel(false, "Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        if(userValidation.isPhoneEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Telefon raqam kiritilmagan"));
         }
-        else if(usersRepository.existsByFirstname(firstnameOriginal) && usersRepository.existsByLastname(lastnameOriginal)){
-            return ResponseEntity.ok(new ResultModel(false, "Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        if(!userValidation.isPhoneValid()){
+            return ResponseEntity.ok(new ResultModel(false,"Telefon raqam xato kiritilgan"));
         }
+        if(userValidation.isUserRegistered()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        }
+
+
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setPhone(phone);
+
         int min = 100000;
         int max = 999999;
 
@@ -89,11 +73,13 @@ public class UserRegisterService {
 
         final GeneratedCard generated = new GeneratedCard();
         generated.setCardID(random_int);
-        user.setGenerated(generated);
         if(os != null){
             user.setOs(os);
         }
+        user.setGenerated(generated);
         user.setDate(LocalDateTime.now());
+
+        user.setUpdatedDate(LocalDateTime.now());
         usersRepository.save(user);
 
         Optional<UsersCount> usersCount = usersCountRepository.findById(1L);
@@ -109,15 +95,11 @@ public class UserRegisterService {
             usersCountRepository.save(usersCount1);
         }
 
-        final ResultSucces registerSucces = new ResultSucces();
 
-        registerSucces.setFirstname(firstnameOriginal);
-        registerSucces.setLastname(lastnameOriginal);
-        registerSucces.setCardID(random_int);
-
-        ResultModelData resultModelData = new ResultModelData(registerSucces);
+        ResultModelData resultModelData = new ResultModelData();
         resultModelData.setStatus(true);
         resultModelData.setMessage("Siz muvaffaqiyatli ro'yxatdan o'tdingiz");
+        resultModelData.setData(user);
         return ResponseEntity.ok(resultModelData);
     }
 

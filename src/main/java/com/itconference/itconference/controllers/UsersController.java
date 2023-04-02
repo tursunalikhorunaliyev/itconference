@@ -15,12 +15,11 @@ import java.util.List;
 @RequestMapping("it-conference-kuva/users")
 @AllArgsConstructor
 public class UsersController {
-    private final UsersRepository usersRepository;
     private final UsersService usersService;
 
     @GetMapping("all")
-    public ResponseEntity<List<Users>> allv1Users(){
-        return ResponseEntity.ok(usersRepository.findAll());
+    public ResponseEntity<List<Users>> all(){
+        return usersService.all();
     }
     @GetMapping("paging")
     public ResponseEntity<ResultModel> users(@RequestParam int page, @RequestParam int pageSize){
@@ -35,9 +34,17 @@ public class UsersController {
         return usersService.yesterday();
 
     }
-    @PostMapping("delete")
+    @DeleteMapping("delete")
     public ResponseEntity<ResultModel> saveUser(@RequestParam("id") Long id){
         return usersService.deleteUser(id);
+    }
+    @PutMapping("edit")
+    public ResponseEntity<ResultModel> editUser(@RequestParam("id") Long id,
+                                                @RequestParam("firstname") String firstname,
+                                                @RequestParam("lastname") String lastname,
+                                                @RequestParam("phone") String phone
+                                                ) {
+        return usersService.editUser(id, firstname,lastname, phone);
     }
 
     @GetMapping("test-server")

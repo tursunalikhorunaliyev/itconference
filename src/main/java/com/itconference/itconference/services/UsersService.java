@@ -12,9 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -54,5 +52,43 @@ public class UsersService {
     public ResponseEntity<ResultModel> deleteUser(Long id){
         usersRepository.deleteById(id);
         return ResponseEntity.ok(new ResultModel(true,"Ma'lumot o'chirildi"));
+    }
+
+    public ResponseEntity<ResultModel> editUser(Long id, String firstname, String lastname, String phone){
+        Optional<Users> usersOptional = usersRepository.findById(id);
+        if(usersOptional.isEmpty()){
+            return ResponseEntity.ok(new ResultModel(false, "User topilmadi"));
+        }
+        firstname = firstname.trim();
+        lastname = lastname.trim();
+        phone = phone.trim();
+        UserValidation userValidation = new UserValidation(usersRepository);
+        userValidation.validate(firstname, lastname, phone);
+
+        if(userValidation.isFirstnameEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Ism kiritilmagan"));
+        }
+        if(userValidation.isLastnameEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Familiya kiritilmagan"));
+        }
+        if(userValidation.isPhoneEmpty()){
+            return ResponseEntity.ok(new ResultModel(false,"Telefon raqam kiritilmagan"));
+        }
+        if(userValidation.isUserRegistered()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        }
+        if(!userValidation.isPhoneValid()){
+            return ResponseEntity.ok(new ResultModel(false,"Telefon raqam xato kiritilgan"));
+        }
+        Users user = usersOptional.get();
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setPhone(phone);
+        usersRepository.save(user);
+        return ResponseEntity.ok(new ResultModel(true,"Foydalanuvchi ma'lumotlari o'zgartirildi"));
+    }
+
+    public ResponseEntity<List<Users>> all(){
+        return ResponseEntity.ok(usersRepository.findAll());
     }
 }
