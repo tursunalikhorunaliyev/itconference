@@ -1,5 +1,6 @@
 package com.itconference.itconference.controllers;
 import com.itconference.itconference.entities.Users;
+import com.itconference.itconference.model.PageableContentModel;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.repositories.UsersRepository;
 import com.itconference.itconference.services.UserLoginService;
@@ -36,8 +37,8 @@ public class UsersController {
     }
 
     @GetMapping("users")
-    public ResponseEntity<Page<Users>> users(@RequestParam int page){
-        return ResponseEntity.ok(usersService.userByPage(page));
+    public ResponseEntity<PageableContentModel> users(@RequestParam int page, @RequestParam int pageSize){
+        return usersService.userByPage(page, pageSize);
     }
 
 

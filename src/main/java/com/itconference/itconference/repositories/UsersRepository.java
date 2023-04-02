@@ -16,8 +16,4 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     boolean existsByFirstname(String firstname);
     Optional<Users> findByPhone(String phone);
     Optional<Users> findByGenerated(GeneratedCard generatedCard);
-
-    @Query(value = "select * from users order by id", nativeQuery = true)
-    Page<Users> getUsersByPage(Pageable pageable);
-
 }
