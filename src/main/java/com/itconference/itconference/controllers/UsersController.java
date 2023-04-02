@@ -1,13 +1,16 @@
 package com.itconference.itconference.controllers;
 import com.itconference.itconference.entities.Users;
+import com.itconference.itconference.entities.UsersCount;
 import com.itconference.itconference.model.PageableContentModel;
 import com.itconference.itconference.model.ResultModel;
+import com.itconference.itconference.repositories.UsersCountRepository;
 import com.itconference.itconference.repositories.UsersRepository;
 import com.itconference.itconference.services.UserLoginService;
 import com.itconference.itconference.services.UserRegisterService;
 import com.itconference.itconference.services.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,8 @@ public class UsersController {
     private final UserLoginService userLoginService;
     private final UsersRepository usersRepository;
     private final UsersService usersService;
+
+    private final UsersCountRepository usersCountRepository;
 
     @PostMapping("register")
     public ResponseEntity<ResultModel> register(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("phone") String phone, @RequestParam(required = false ,value = "device") String os){
@@ -37,9 +42,20 @@ public class UsersController {
     }
 
     @GetMapping("users")
-    public ResponseEntity<PageableContentModel> users(@RequestParam int page, @RequestParam int pageSize){
+    public ResponseEntity<ResultModel> users(@RequestParam int page, @RequestParam int pageSize){
         return usersService.userByPage(page, pageSize);
     }
+
+    @GetMapping("users/today")
+    public ResponseEntity<List<Users>> today(){
+        return usersService.today();
+    }
+    @GetMapping("users/yesterday")
+    public ResponseEntity<List<Users>> yesterday(){
+        return usersService.yesterday();
+
+    }
+
 
 
     @GetMapping("test-server")

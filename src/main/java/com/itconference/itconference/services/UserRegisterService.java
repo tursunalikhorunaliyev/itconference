@@ -2,10 +2,12 @@ package com.itconference.itconference.services;
 
 import com.itconference.itconference.entities.GeneratedCard;
 import com.itconference.itconference.entities.Users;
+import com.itconference.itconference.entities.UsersCount;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultModelData;
 import com.itconference.itconference.model.ResultSucces;
 import com.itconference.itconference.repositories.GeneratedCardRepository;
+import com.itconference.itconference.repositories.UsersCountRepository;
 import com.itconference.itconference.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,6 +24,8 @@ import java.util.List;
 public class UserRegisterService {
     private final UsersRepository usersRepository;
     private final GeneratedCardRepository generatedRepository;
+
+    private final UsersCountRepository usersCountRepository;
 
 
     public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone, String os){
@@ -90,6 +95,20 @@ public class UserRegisterService {
         }
         user.setDate(LocalDateTime.now());
         usersRepository.save(user);
+
+        Optional<UsersCount> usersCount = usersCountRepository.findById(1L);
+
+        if(usersCount.isPresent()){
+            UsersCount usersCountOriginal = usersCount.get();
+            usersCountOriginal.setUserCount(usersCountOriginal.getUserCount()+1);
+            usersCountRepository.save(usersCountOriginal);
+        }
+        else{
+            UsersCount usersCount1 = new UsersCount();
+            usersCount1.setUserCount(1);
+            usersCountRepository.save(usersCount1);
+        }
+
         final ResultSucces registerSucces = new ResultSucces();
 
         registerSucces.setFirstname(firstnameOriginal);
