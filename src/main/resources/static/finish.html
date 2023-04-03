@@ -20,13 +20,13 @@
             <nav class="d-flex justify-content-center mb-5">
                 <h1 style="color: black; font-weight: 900; font-size: 35px;" class="fw-bold">DIQQAT!</h1>
             </nav>
-            <div class="salom hero d-flex justify-content-center flex-column align-items-center flex-wrap">
-                <p class="idP d-flex flex-column justify-content-center align-items-center">
-                    <span class="cardEl mb-5 fw-bold">Sizning id raqamingiz</span>
-                    <span id="userId"></span>
+            <div class="salom hero d-flex justify-content-center flex-column align-items-center flex-wrap ">
+                <p class="idP d-flex flex-column justify-content-center align-items-center mb-3">
+                    <span class="cardEl mb-1 fw-bold">Sizning id raqamingiz</span>
+                    <span id="userId" class="mb-3"></span>
                 </p>
 
-                <p class="warnP" style="color:black">Eslatib o'tamiz ushbu taqdim etilgan <span style="font-weight: 800;letter-spacing: .1rem; ">ID</span> raqamingizni eslab qoling!!!</p>
+                <p class="warnP" style="color:black; font-size: 1rem;">Eslatib o'tamiz ushbu taqdim etilgan <span style="font-weight: 800;letter-spacing: .1rem; ">ID</span> raqamingizni eslab qoling!!!</p>
             </div>
            </div>
         </div>
@@ -41,7 +41,8 @@
         console.log(userLogin);
 
         let ren = JSON.parse(localStorage.getItem('list')).forEach(element => {
-            document.getElementById('userId').textContent = element.render
+            console.log(element.renderId);
+            document.getElementById('userId').textContent = element.renderId
         });
 
 

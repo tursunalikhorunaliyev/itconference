@@ -49,7 +49,10 @@ public class UserRegisterService {
         if(!userValidation.isPhoneValid()){
             return ResponseEntity.ok(new ResultModel(false,"Telefon raqam xato kiritilgan"));
         }
-        if(userValidation.isUserRegistered()){
+        if(userValidation.isPhoneRegistered()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        }
+        if(userValidation.isUsernameRegistered()){
             return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
         }
 

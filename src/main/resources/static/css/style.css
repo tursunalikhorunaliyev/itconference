@@ -212,7 +212,7 @@ button {
 .header_section {
     width: 100%;
     float: left;
-    background-image: url(../images/jared-brashier-6WPcf5D1XdA-unsplash.jpg);
+    background-image: url(../images/jared-brashier-6WPcf5D1XdA-unspl\ copy.jpg);
     background-position: bottom;
     height: auto;
     background-size: 100%;
@@ -318,7 +318,7 @@ button {
 .banner_taital {
     width: 100%;
     float: left;
-    font-size: 55px;
+    font-size: 50px;
     color: #ffffff;
     font-weight: 600;
     text-align: center;
@@ -516,6 +516,7 @@ button {
     padding-bottom: 345px;
     padding-top: 200px;
 }
+
 
 .blog_taital {
     width: 100%;
@@ -816,7 +817,6 @@ button {
 }
 .email-bt {
     width: 100%;
-    float: left;
     font-size: 18px;
     color: #393838;
     margin-bottom: 20px;
@@ -967,41 +967,61 @@ button {
     gap: 2rem;
 }
 
+.btns a:first-child{
+    width: 200px;
+    background: green;
+    border-radius: 10px;
+    transition: .2s;
+}
+.btns a:last-child{
+    width: 200px;
+    background: gray;
+    border-radius: 10px;
+    transition: .2s;
+}
+
 .btn1{
-    width: 200px;
-    height: 40px;
-    background-color: green;
-    border-radius: 5px;
-}
-.btn2{
-    width: 200px;
-    height: 40px;
-    background-color: gray;
-    border-radius: 5px;
-}
-.btn1 a:last-child{
+    width: 100%;
+    background: inherit;
+    padding: 10px 20px;
+    border-radius: 3px;
     color: white;
     font-weight: 600;
     letter-spacing: .1rem;
 }
-.btn2 a:first-child{
+.btn2{
+    width: 100%;
+    background: inherit;
+    padding: 10px 20px;
+    border-radius: 3px;
     color: black;
-    letter-spacing: .2rem;
     font-weight: 600;
+    letter-spacing: .1rem;
 }
-.btn1:hover{
+/* hover */
+.btns a:first-child:hover{
     background: white;
 }
-.btn1:hover a{
-    color: green;
-}
-.btn2:hover{
-    background-color: black;
-}
-.btn2:hover a{
-    color: gray;
+.btns a:last-child:hover{
+    background: black;
 }
 
+.btns a:first-child:hover .btn1{
+    color: green;
+}
+.btns a:last-child:hover .btn2{
+    color: gray;
+}
+/* active */
+
+.btns a:first-child:active{
+    transform: translateY(3px);
+    background: white;
+}
+.btns a:last-child:active{
+    transform: translateY(3px);
+    background: black;
+}
 
 
 @media screen and (max-widht: 1400px) {
@@ -1274,6 +1294,24 @@ button {
     }
 }
 
+.form-field {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 1em;
+    font-size: 16px;
+    font-family: 'Helvetica';
+    color: gray;
+    border: 1px solid gray;
+    
+}
+.form-field::placeholder {
+  opacity: 0.8;
+}
+
+#tel{
+    width: 100%;
+}
 
 /* footer section end */
 

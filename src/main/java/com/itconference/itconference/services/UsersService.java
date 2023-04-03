@@ -55,9 +55,13 @@ public class UsersService {
     }
 
     public ResponseEntity<ResultModel> editUser(Long id, String firstname, String lastname, String phone){
+        Users user = new Users();
         Optional<Users> usersOptional = usersRepository.findById(id);
         if(usersOptional.isEmpty()){
             return ResponseEntity.ok(new ResultModel(false, "User topilmadi"));
+        }
+        else{
+            user = usersOptional.get();
         }
         firstname = firstname.trim();
         lastname = lastname.trim();
@@ -74,13 +78,15 @@ public class UsersService {
         if(userValidation.isPhoneEmpty()){
             return ResponseEntity.ok(new ResultModel(false,"Telefon raqam kiritilmagan"));
         }
-        if(userValidation.isUserRegistered()){
-            return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
-        }
         if(!userValidation.isPhoneValid()){
             return ResponseEntity.ok(new ResultModel(false,"Telefon raqam xato kiritilgan"));
         }
-        Users user = usersOptional.get();
+        if(userValidation.isUsernameRegistered()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu ism familiya ro'yxatdan mavjud"));
+        }
+        if(userValidation.isPhoneRegistered()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu telefon raqam ro'yxatdan o'tkazilgan"));
+        }
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setPhone(phone);

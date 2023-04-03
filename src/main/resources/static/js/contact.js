@@ -8,51 +8,18 @@ let form = document.getElementById('form')
 
 let userLogin = JSON.parse(localStorage.getItem('list')) ? JSON.parse(localStorage.getItem('list')) : []
 
-function doFormat(x, pattern, mask) {
-  var strippedValue = x.replace(/[^0-9]/g, "");
-  var chars = strippedValue.split('');
-  var count = 0;
+const phoneMaskSelector = '.js-phone-input';
+const phoneMaskInputs = document.querySelectorAll(phoneMaskSelector);
 
-  var formatted = '';
-  for (var i = 0; i < pattern.length; i++) {
-    const c = pattern[i];
-    if (chars[count]) {
-      if (/\*/.test(c)) {
-        formatted += chars[count];
-        count++;
-      } else {
-        formatted += c;
-      }
-    } else if (mask) {
-      if (mask.split('')[i])
-        formatted += mask.split('')[i];
-    }
+const masksOptions = {
+  phone: {
+    mask: '(00) 000-00-00'
   }
-  return formatted;
+};
+
+for(const item of phoneMaskInputs) {
+  new IMask(item, masksOptions.phone);
 }
-
-document.querySelectorAll('[data-mask]').forEach(function (e) {
-  function format(elem) {
-    const val = doFormat(elem.value, elem.getAttribute('data-format'));
-    elem.value = doFormat(elem.value, elem.getAttribute('data-format'), elem.getAttribute('data-mask'));
-
-    if (elem.createTextRange) {
-      var range = elem.createTextRange();
-      range.move('character', val.length);
-      range.select();
-    } else if (elem.selectionStart) {
-      elem.focus();
-      elem.setSelectionRange(val.length, val.length);
-    }
-  }
-  e.addEventListener('keyup', function () {
-    format(e);
-  });
-  e.addEventListener('keydown', function () {
-    format(e);
-  });
-  format(e)
-});
 
 
 
@@ -95,18 +62,17 @@ form.addEventListener('submit', (e) => {
   }).then((user) => {
     return user.json()
   }).then((item) => {
-    console.log(item);
 
     let message = item.message
     let status = item.status
 
 
     if (status == true) {
-      let cardId = item.data.cardID
-      window.open('finish.html', '_self')
-      localStorage.clear()
-      userLogin.push({ "render": cardId })
+      let cardId = item.data.generated.cardID
+      userLogin.push({ "renderId": cardId })
+      console.log(userLogin);
       localStorage.setItem('list', JSON.stringify(userLogin))
+      window.open('finish.html', '_self')
 
     } else {
       function myFunction() {
@@ -126,5 +92,5 @@ form.addEventListener('submit', (e) => {
     }
 
   })
-   
+
 })

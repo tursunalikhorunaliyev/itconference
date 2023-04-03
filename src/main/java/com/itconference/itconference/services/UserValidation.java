@@ -19,7 +19,10 @@ public class UserValidation {
 
     private boolean isPhoneEmpty = false;
 
-    private boolean isUserRegistered = false;
+
+    private boolean isPhoneRegistered = false;
+
+    private boolean isUsernameRegistered = false;
 
     private final UsersRepository usersRepository;
 
@@ -40,6 +43,7 @@ public class UserValidation {
         phoneCodes.add("73");
         phoneCodes.add("95");
         phoneCodes.add("71");
+        phoneCodes.add("97");
 
         if(phone.isEmpty()){
             isPhoneEmpty=true;
@@ -54,10 +58,10 @@ public class UserValidation {
         }
 
         if(usersRepository.existsByPhone(phone)){
-            isUserRegistered = true;
+            isPhoneRegistered = true;
         }
         else if(usersRepository.existsByFirstname(firstname) && usersRepository.existsByLastname(lastname)){
-            isUserRegistered = true;
+            isUsernameRegistered = true;
         }
     }
 
