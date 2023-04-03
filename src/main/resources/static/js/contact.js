@@ -1,4 +1,4 @@
-const api = 'http://35.242.182.188:8080/it-conference-kuva/auth/register'
+const api = 'http://localhost:8080/it-conference-kuva/auth/register'
 
 const fam = document.getElementById('fam')
 const tel = document.getElementById('tel')
