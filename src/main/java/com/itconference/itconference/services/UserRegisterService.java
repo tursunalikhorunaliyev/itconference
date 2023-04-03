@@ -80,6 +80,7 @@ public class UserRegisterService {
         LocalDateTime localNow = LocalDateTime.now();
         int tashkentTime = localNow.getHour()+5;
         localNow = LocalDateTime.of(localNow.getYear(),localNow.getMonth(), localNow.getDayOfMonth(),tashkentTime, localNow.getMinute(), localNow.getSecond());
+
         user.setDate(localNow);
         user.setUpdatedDate(localNow);
         usersRepository.save(user);

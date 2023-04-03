@@ -41,7 +41,7 @@ public class UserLoginService {
                 ResultModelData resultSucces = new ResultModelData();
                 resultSucces.setStatus(true);
                 resultSucces.setMessage("Foydalanuvchi tizimga kirdi");
-                resultSucces.setData(new ResultSucces(user.getFirstname(), user.getFirstname(),user.getGenerated().getCardID()));
+                resultSucces.setData(user);
                 return ResponseEntity.ok(resultSucces);
             }
             else{
