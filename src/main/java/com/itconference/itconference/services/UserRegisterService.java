@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class UserRegisterService {
 
 
 
-    public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone, String os){
+    public ResponseEntity<ResultModel> register(String firstname, String lastname, String phone, String os, String currentDate){
 
 
         UserValidation userValidation = new UserValidation(usersRepository);
@@ -77,9 +79,13 @@ public class UserRegisterService {
             user.setOs(os);
         }
         user.setGenerated(generated);
-        user.setDate(LocalDateTime.now());
 
-        user.setUpdatedDate(LocalDateTime.now());
+
+        LocalDateTime localNow = LocalDateTime.now();
+        int tashkentTime = localNow.getHour()+5;
+        localNow = LocalDateTime.of(localNow.getYear(),localNow.getMonth(), localNow.getDayOfMonth(),tashkentTime, localNow.getMinute(), localNow.getSecond());
+        user.setDate(localNow);
+        user.setUpdatedDate(localNow);
         usersRepository.save(user);
 
         Optional<UsersCount> usersCount = usersCountRepository.findById(1L);
