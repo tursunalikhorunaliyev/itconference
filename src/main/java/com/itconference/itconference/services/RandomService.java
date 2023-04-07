@@ -1,23 +1,13 @@
 package com.itconference.itconference.services;
-import com.itconference.itconference.entities.GeneratedCard;
-import com.itconference.itconference.entities.RandomedUsers;
-import com.itconference.itconference.entities.Users;
-import com.itconference.itconference.entities.Winners;
+import com.itconference.itconference.entities.*;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultModelData;
 import com.itconference.itconference.model.ResultRandom;
-import com.itconference.itconference.repositories.GeneratedCardRepository;
-import com.itconference.itconference.repositories.RandomedUsersRepository;
-import com.itconference.itconference.repositories.UsersRepository;
-import com.itconference.itconference.repositories.WinnersRepository;
+import com.itconference.itconference.repositories.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class RandomService {
@@ -27,13 +17,19 @@ public class RandomService {
     private final UsersRepository usersRepository;
 
     private final GeneratedCardRepository generatedCardRepository;
+
+    private final SubjectsRepository subjectsRepository;
+
+    private final WinnersSubjectsRepository winnersSubjectsRepository;
     private final Random random = new Random();
 
-    public RandomService(RandomedUsersRepository randomedUsersRepository, WinnersRepository winnersRepository, UsersRepository usersRepository, GeneratedCardRepository generatedCardRepository) {
+    public RandomService(RandomedUsersRepository randomedUsersRepository, WinnersRepository winnersRepository, UsersRepository usersRepository, GeneratedCardRepository generatedCardRepository, SubjectsRepository subjectsRepository, WinnersSubjectsRepository winnersSubjectsRepository) {
         this.randomedUsersRepository = randomedUsersRepository;
         this.winnersRepository = winnersRepository;
         this.usersRepository = usersRepository;
         this.generatedCardRepository = generatedCardRepository;
+        this.subjectsRepository = subjectsRepository;
+        this.winnersSubjectsRepository = winnersSubjectsRepository;
     }
 
     private List<Users> usersList = new LinkedList<>();
@@ -108,23 +104,80 @@ public class RandomService {
     }
 
     public ResponseEntity<ResultModel> acceptWinner(Long cardId){
+
+        List<Winners> winners = winnersRepository.findAll();
+        List<Long> winnersCardId = winners.stream().map(e-> e.getUsers().getGenerated().getCardID()).toList();
+
+       if(winnersCardId.contains(cardId)){
+           return ResponseEntity.ok(new ResultModel(false, "Ushbu qatnashuvchi g'olib deb topilgan"));
+       }
+       if(winners.size()>=5){
+            return ResponseEntity.ok(new ResultModel(false, "Barcha g'oliblar aniqlandi"));
+        }
         Optional<GeneratedCard> generatedCardOptional = generatedCardRepository.findByCardID(cardId);
         if(generatedCardOptional.isPresent()){
+
             GeneratedCard generatedCard = generatedCardOptional.get();
             Optional<Users> winnerOptional = usersRepository.findByGenerated(generatedCard);
             if(winnerOptional.isPresent()){
-                Winners winner = new Winners();
-                winner.setUsers(winnerOptional.get());
-                winnersRepository.save(winner);
-                return ResponseEntity.ok(new ResultModel(true, "G'olib saqlandi"));
+                Users userTest = winnerOptional.get();
+                Optional<RandomedUsers> randomedUsersOptional = randomedUsersRepository.findByUsers(userTest);
+                if(randomedUsersOptional.isPresent()){
+                    Winners winner = new Winners();
+                    winner.setUsers(winnerOptional.get());
+                    winnersRepository.save(winner);
+                    return ResponseEntity.ok(new ResultModel(true, "G'olib saqlandi"));
+                }
+                else{
+                    return ResponseEntity.ok(new ResultModel(false, "Qatnashchi random qilinmagan"));
+                }
             }
             else{
                 return ResponseEntity.ok(new ResultModel(false, "Card id topilmadi"));
             }
         }
         else{
-            return ResponseEntity.ok(new ResultModel(false, "User topilmadi"));
+            return ResponseEntity.ok(new ResultModel(false, "Qatnashuvchi topilmadi"));
         }
 
+    }
+
+    public ResponseEntity<List<Winners>> allWinners(){
+        return ResponseEntity.ok(winnersRepository.findAll());
+    }
+
+    public ResponseEntity<ResultModel> winnersWithSubjects(){
+
+        winnersSubjectsRepository.deleteAll();
+        List<Subjects> subjects = subjectsRepository.findAll();
+        List<Winners> winners = winnersRepository.findAll();
+
+        LinkedList<Integer> generatedRandomNumbers = new LinkedList<>();
+
+        int randomNumber = new Random().nextInt(5);
+        while (generatedRandomNumbers.size()!=5){
+            while (generatedRandomNumbers.contains(randomNumber)){
+                randomNumber = new Random().nextInt(5);
+            }
+            generatedRandomNumbers.add(randomNumber);
+        }
+
+        for(int i=0; i<generatedRandomNumbers.size(); i++){
+            WinnersSubjects winnersSubjects = new WinnersSubjects();
+            winnersSubjects.setWinners(winners.get(i));
+            winnersSubjects.setSubjects(subjects.get(generatedRandomNumbers.get(i)));
+            winnersSubjectsRepository.save(winnersSubjects);
+        }
+
+        ResultModelData resultModelData = new ResultModelData();
+        resultModelData.setStatus(true);
+        resultModelData.setMessage("G'oliblar yo'nalishlarga biriktirildi");
+        resultModelData.setData(winnersSubjectsRepository.findAll());
+        return ResponseEntity.ok(resultModelData);
+
+    }
+
+    public ResponseEntity<List<WinnersSubjects>> allWinnersSubjects(){
+        return ResponseEntity.ok(winnersSubjectsRepository.findAll());
     }
 }

@@ -2,8 +2,6 @@ package com.itconference.itconference.controllers;
 
 import com.itconference.itconference.entities.Users;
 import com.itconference.itconference.model.ResultModel;
-import com.itconference.itconference.repositories.UsersCountRepository;
-import com.itconference.itconference.repositories.UsersRepository;
 import com.itconference.itconference.services.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +33,8 @@ public class UsersController {
 
     }
     @DeleteMapping("delete")
-    public ResponseEntity<ResultModel> saveUser(@RequestParam("id") Long id){
-        return usersService.deleteUser(id);
+    public ResponseEntity<ResultModel> deleteUsers(@RequestParam("id") Long id, @RequestParam("cause") String cause){
+        return usersService.deleteUser(id,cause);
     }
     @PutMapping("edit")
     public ResponseEntity<ResultModel> editUser(@RequestParam("id") Long id,

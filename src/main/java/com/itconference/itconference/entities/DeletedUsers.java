@@ -5,17 +5,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-public class Users {
+@Table(name = "deleted_users")
+public class DeletedUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(nullable = false, unique = true)
+    private Long userId;
 
     @Column(nullable = false)
     private String firstname;
@@ -23,20 +25,27 @@ public class Users {
     @Column(nullable = false)
     private String lastname;
 
+    @Column
+    private String device;
+
     @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(name = "device")
-    private String os;
+    @Column(nullable = false, unique = true)
+    private Long generatedId;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "user_generated_id", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "generated_id", referencedColumnName = "id"))
-    private GeneratedCard generated;
+    @Column(name = "cause", nullable = false)
+    private String cause;
+
+    @Column(nullable = false)
+    private LocalDateTime deletedAt;
+
+
 
 }

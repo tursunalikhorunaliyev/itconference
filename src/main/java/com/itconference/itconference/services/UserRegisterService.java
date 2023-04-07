@@ -1,10 +1,12 @@
 package com.itconference.itconference.services;
 
+import com.itconference.itconference.entities.DeletedUsers;
 import com.itconference.itconference.entities.GeneratedCard;
 import com.itconference.itconference.entities.Users;
 import com.itconference.itconference.entities.UsersCount;
 import com.itconference.itconference.model.ResultModel;
 import com.itconference.itconference.model.ResultModelData;
+import com.itconference.itconference.repositories.DeletedUsersRepository;
 import com.itconference.itconference.repositories.GeneratedCardRepository;
 import com.itconference.itconference.repositories.UsersCountRepository;
 import com.itconference.itconference.repositories.UsersRepository;
@@ -23,6 +25,8 @@ public class UserRegisterService {
     private final GeneratedCardRepository generatedRepository;
 
     private final UsersCountRepository usersCountRepository;
+
+    private final DeletedUsersRepository deletedUsersRepository;
 
 
 
@@ -49,6 +53,12 @@ public class UserRegisterService {
         if(!userValidation.isPhoneValid()){
             return ResponseEntity.ok(new ResultModel(false,"Telefon raqam xato kiritilgan"));
         }
+
+        Optional<DeletedUsers> deletedUsers = deletedUsersRepository.findByPhone(phone);
+        if(deletedUsers.isPresent()){
+            return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
+        }
+
         if(userValidation.isPhoneRegistered()){
             return ResponseEntity.ok(new ResultModel(false,"Ushbu foydalanuvchi ro'yxatdan o'tgan"));
         }
@@ -83,7 +93,6 @@ public class UserRegisterService {
         LocalDateTime localNow = LocalDateTime.now();
         int tashkentTime = localNow.getHour()+5;
         localNow = LocalDateTime.of(localNow.getYear(),localNow.getMonth(), localNow.getDayOfMonth(),tashkentTime, localNow.getMinute(), localNow.getSecond());
-
         user.setDate(localNow);
         user.setUpdatedDate(localNow);
         usersRepository.save(user);
