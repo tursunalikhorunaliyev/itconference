@@ -169,10 +169,9 @@ public class RandomService {
             winnersSubjectsRepository.save(winnersSubjects);
         }
 
-        ResultModelData resultModelData = new ResultModelData();
+        ResultModel resultModelData = new ResultModel();
         resultModelData.setStatus(true);
         resultModelData.setMessage("G'oliblar yo'nalishlarga biriktirildi");
-        resultModelData.setData(winnersSubjectsRepository.findAll());
         return ResponseEntity.ok(resultModelData);
 
     }
